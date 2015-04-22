@@ -56,7 +56,19 @@ namespace STS.Configuration
                         Emphasize = false,
                     },
 
-
+                    ////////////////////////
+                    // roles
+                    ////////////////////////
+                    new Scope
+                    {
+                        Enabled = true,
+                        Name = "roles",
+                        Type = ScopeType.Identity,
+                        Claims = new List<ScopeClaim>
+                        {
+                            new ScopeClaim("role")
+                        }
+                    }
 
                     //new Scope
                     //{

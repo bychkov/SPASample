@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 
-namespace SPATemplate
+namespace AngularClient.ApiControllers
 {
     public class HomeDataController : ApiController
     {
+        [AllowAnonymous]
         public string Get()
         {
             return "Unsecured home data";
