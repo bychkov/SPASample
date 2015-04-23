@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -28,6 +29,8 @@ namespace AngularClient
             WebApiConfig.Register(config);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = "sub";
 
             app.UseCors(CorsOptions.AllowAll);
 

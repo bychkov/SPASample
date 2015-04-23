@@ -31,7 +31,7 @@ namespace AngularClient
     {
         private const string ClientId = "AngularClient";
         private const string IdentityServerUri = "https://localhost:44306/core";
-        private const string ClientRedirectUri = "http://localhost:44307";
+        private const string ClientRedirectUri = "https://localhost:44307";
 
         public void ConfigureAuth(IAppBuilder app, HttpConfiguration config)
         {
@@ -52,9 +52,13 @@ namespace AngularClient
                 Authority = IdentityServerUri,
                 ClientId = ClientId,
                 RedirectUri = ClientRedirectUri,
-                Scope = "openid profile",
-                //ResponseType = "code id_token token",
-                //Scope = "openid email profile offline_access",
+
+                //ResponseType = "id_token",
+                ResponseType = "code id_token token",
+                Scope = "openid email profile localApi",
+                //Scope = "openid email roles claims",
+
+                BackchannelCertificateValidator = new FakeCertificateValidator(), //TODO: Remove the stub for prod certificate validation
 
                 SignInAsAuthenticationType = "Cookies"
             });
@@ -64,7 +68,7 @@ namespace AngularClient
                 inner.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
                 {
                     Authority = IdentityServerUri,
-                    RequiredScopes = new[] { "localApi" }
+                    // RequiredScopes = new[] { "localApi" }
                 });
 
                 inner.RequireScopes(new ScopeValidationOptions()

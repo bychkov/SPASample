@@ -18,9 +18,9 @@ namespace AngularClient
 
             //config.EnableCors(new EnableCorsAttribute("http://localhost:21575, http://localhost:37045", "accept, authorization", "GET", "WWW-Authenticate"));
 
-            config.SuppressDefaultHostAuthentication();
+            //config.SuppressDefaultHostAuthentication();
 
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
