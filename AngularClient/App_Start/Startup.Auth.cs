@@ -51,7 +51,7 @@ namespace AngularClient
             {
                 Authority = IdentityServerUri,
                 ClientId = ClientId,
-                RedirectUri = ClientRedirectUri,
+                RedirectUri = ClientRedirectUri + "/#/",
 
                 //ResponseType = "id_token",
                 ResponseType = "code id_token token",

@@ -1,27 +1,10 @@
-﻿(function () {
-    'use strict';
+﻿'use strict';
 
-    var app = angular.module('app', [
-        // Angular modules 
-        'ngAnimate',
-        'ngRoute'
-
-        // Custom modules 
-
-        // 3rd Party Modules
-        
-    ]);
-
-    app.config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
-        $routeProvider.when('/', { templateUrl: '/app/home/home.html' });
-        $routeProvider.when('/other', { templateUrl: '/app/other/other.html' });
-        $routeProvider.when('/admin', { templateUrl: '/app/admin/admin.html' });
-        $routeProvider.otherwise({ redirectTo: '/' });
-
-    }]);
-
-    app.run(['$route', 'authService', function ($route, authService) {
-        // bootstrap router
-        authService.setAuthContext();
-    }]);
-})();
+// Declare app level module which depends on views, and components
+angular.module('myApp', [
+  'ngRoute',
+  'myApp.auth'
+]).
+config(['$routeProvider', function($routeProvider) {
+  $routeProvider.otherwise({redirectTo: '/register'});
+}]);

@@ -11,16 +11,17 @@ namespace AngularClient.ApiControllers
     [Authorize]
     public class IdentityController : ApiController
     {
-        public dynamic Get()
+        public IHttpActionResult Get()
         {
             var principal = User as ClaimsPrincipal;
 
-            return from c in principal.Identities.First().Claims
+            var claims = from c in principal.Identities.First().Claims
                    select new
                    {
                        c.Type,
                        c.Value
                    };
+            return Json(claims);
         }
     }
 }

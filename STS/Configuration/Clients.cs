@@ -51,6 +51,8 @@ namespace STS.Configuration
                     RedirectUris = new List<string>
                     {
                         AngularClientUri,
+                        AngularClientUri + "/#/",
+                        AngularClientUri + "/#/loggedin?"
                     },
 
                     PostLogoutRedirectUris = new List<string>
