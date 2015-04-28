@@ -41,8 +41,15 @@
         function authorize() {
             var token = getAccessToken();
             if (!token) {
+                var uri = URI('https://localhost:44306/core/connect/authorize')
+                            .addSearch('response_type', 'code id_token token')
+                            .addSearch('client_id', 'SPA-Angular')
+                            .addSearch('scope', 'openid profile localApi')
+                            .addSearch('redirect_uri', 'https://localhost:44308/#/')
+                            .addSearch('nonce', Math.floor(Math.random() * 99999));
+                window.location.href = uri;
                 // no token - so bounce to Authorize endpoint in AccountController to sign in or register
-                window.location = "/Account/Authorize?client_id=web&response_type=token&state=" + encodeURIComponent(window.location.hash);
+                //window.location = "https://localhost:44306/core/connect/authorize?client_id=SPA-Angular&response_type=token&state=" + encodeURIComponent(window.location.hash);
             }
             else {
                 $http.defaults.headers.common.Authorization = "Bearer " + token;
