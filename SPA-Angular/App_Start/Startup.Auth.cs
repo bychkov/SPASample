@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
 using Thinktecture.IdentityModel.Owin.ScopeValidation;
@@ -26,19 +27,18 @@ namespace SPA_Angular
         private const string IdentityServerUri = "https://localhost:44306/core";
         private const string ClientRedirectUri = "https://localhost:44308";
 
-        public void ConfigureAuth(IAppBuilder app, HttpConfiguration config)
+        public void ConfigureAuth(IAppBuilder app)
         {
-            ThinktectureAuthentication(app, config);
+            ThinktectureAuthentication(app);
         }
 
-        private void ThinktectureAuthentication(IAppBuilder app, HttpConfiguration config)
+        private void ThinktectureAuthentication(IAppBuilder app)
         {
             JwtSecurityTokenHandler.InboundClaimTypeMap = ClaimMappings.None;
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = "Cookies"
-            });
+            app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions { AuthenticationType = CookieAuthenticationDefaults.AuthenticationType });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
@@ -53,7 +53,7 @@ namespace SPA_Angular
 
                 BackchannelCertificateValidator = new FakeCertificateValidator(), //TODO: Remove the stub for prod certificate validation
 
-                SignInAsAuthenticationType = "Cookies"
+                SignInAsAuthenticationType = CookieAuthenticationDefaults.AuthenticationType
             });
 
             app.Map("/api", inner =>
@@ -69,6 +69,25 @@ namespace SPA_Angular
                     AllowAnonymousAccess = true,
                     Scopes = new[] { "localApi" }
                 });
+
+
+                HttpConfiguration config = new HttpConfiguration();
+
+                config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+                // Web API routes
+                config.MapHttpAttributeRoutes();
+
+                //config.EnableCors(new EnableCorsAttribute("http://localhost:21575, http://localhost:37045", "accept, authorization", "GET", "WWW-Authenticate"));
+
+                config.SuppressDefaultHostAuthentication();
+                config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+                config.Routes.MapHttpRoute(
+                    name: "DefaultApi",
+                    routeTemplate: "{controller}/{id}", // note: api prefix is removed because it will be called from within app.Map("/api", innner => ... )
+                    defaults: new { id = RouteParameter.Optional }
+                );
 
                 inner.UseWebApi(config);
             });

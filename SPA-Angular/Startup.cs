@@ -23,7 +23,7 @@ namespace SPA_Angular
         {
             AreaRegistration.RegisterAllAreas();
 
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -32,8 +32,7 @@ namespace SPA_Angular
             AntiForgeryConfig.UniqueClaimTypeIdentifier = "sub";
             app.UseCors(CorsOptions.AllowAll);
 
-            HttpConfiguration config = new HttpConfiguration();
-            ConfigureAuth(app, config);
+            ConfigureAuth(app);
         }
     }
 }

@@ -19,13 +19,14 @@ namespace SPA_Angular.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Authorize()
         {
             var claims = new ClaimsPrincipal(User).Claims.ToArray();
